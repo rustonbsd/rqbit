@@ -217,7 +217,7 @@ impl ProxyConfigTrait for WireguardProxyConfig {
 
 }
 
-enum ProxyConfig {
+pub enum ProxyConfig {
     SocksProxyConfig(SocksProxyConfig),
     WireguardProxyConfig(WireguardProxyConfig),
 }
@@ -227,7 +227,7 @@ enum ProxyConfigTcpStream {
     TcpStream(TcpStream),
 }
 
-trait ProxyConfigTrait {
+pub trait ProxyConfigTrait {
     async fn connect(
         &self,
         addr: SocketAddr,
@@ -238,6 +238,12 @@ trait ProxyConfigTrait {
 #[derive(Default)]
 pub(crate) struct StreamConnector {
     proxy_config: Option<ProxyConfig>,
+}
+
+impl From<Option<ProxyConfig>> for StreamConnector {
+    fn from(proxy_config: Option<ProxyConfig>) -> Self {
+        Self { proxy_config: Some(proxy_config.unwrap()) }
+    }
 }
 
 impl From<Option<SocksProxyConfig>> for StreamConnector {

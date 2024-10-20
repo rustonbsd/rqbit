@@ -22,7 +22,7 @@ use crate::{
     storage::{
         filesystem::FilesystemStorageFactory, BoxStorageFactory, StorageFactoryExt, TorrentStorage,
     },
-    stream_connect::{SocksProxyConfig, StreamConnector},
+    stream_connect::{ProxyConfig, ProxyConfigTrait as _, SocksProxyConfig, StreamConnector, WireguardProxyConfig},
     torrent_state::{
         initializing::TorrentStateInitializing, ManagedTorrentHandle, ManagedTorrentLocked,
         ManagedTorrentOptions, ManagedTorrentState, TorrentStateLive,
@@ -409,6 +409,8 @@ pub struct SessionOptions {
     // socks5://[username:password@]host:port
     pub socks_proxy_url: Option<String>,
 
+    pub wireguard_conf: Option<String>,
+
     pub cancellation_token: Option<CancellationToken>,
 
     // how many concurrent torrent initializations can happen
@@ -590,10 +592,15 @@ impl Session {
 
             let proxy_config = match opts.socks_proxy_url.as_ref() {
                 Some(pu) => Some(
-                    SocksProxyConfig::parse(pu)
-                        .with_context(|| format!("error parsing proxy url {}", pu))?,
+                    ProxyConfig::SocksProxyConfig(SocksProxyConfig::parse(pu).await
+                        .with_context(|| format!("error parsing proxy url {}", pu))?),
                 ),
-                None => None,
+                None => match opts.wireguard_conf {
+                    Some(wg_conf) => {
+                        Some(ProxyConfig::WireguardProxyConfig(WireguardProxyConfig::parse(&wg_conf).await.with_context(|| format!("error parsing wireguard proxy conf: {}",wg_conf)).unwrap()))
+                    },
+                    None => None,
+                },
             };
 
             let reqwest_client = {
