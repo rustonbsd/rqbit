@@ -1,3 +1,4 @@
 /target
 /desktop/src-tauri/gen/
 .DS_Store
+.vscode/launch.json

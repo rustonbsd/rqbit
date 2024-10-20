@@ -48,7 +48,7 @@ fn main() {
         println!("cargo:rerun-if-changed={}", webui_src_dir.to_str().unwrap());
 
         // Run "npm install && npm run build" in the webui directory
-        for cmd in ["npm install", "npm run build"] {
+        for cmd in ["npm install"] {
             run_cmd(webui_dir, cmd).unwrap();
         }
     }
