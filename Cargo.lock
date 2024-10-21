@@ -3704,7 +3704,7 @@ dependencies = [
 [[package]]
 name = "onetun"
 version = "0.3.7"
-source = "git+https://github.com/rustonbsd/onetun.git?rev=ec2cc3c0c3a006a0a5555132d5c799ec51e773c1#ec2cc3c0c3a006a0a5555132d5c799ec51e773c1"
+source = "git+https://github.com/rustonbsd/onetun.git?rev=8423e914a2ff05d1c011b27da19886b1733eb28a#8423e914a2ff05d1c011b27da19886b1733eb28a"
 dependencies = [
  "anyhow",
  "async-recursion",
