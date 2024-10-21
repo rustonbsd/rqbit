@@ -109,7 +109,7 @@ async-trait = "0.1.81"
 async-backtrace = { version = "0.2", optional = true }
 notify = { version = "6.1.1", optional = true }
 walkdir = "2.5.0"
-onetun = { git = "https://github.com/rustonbsd/onetun.git", rev = "6f400a6d27e63c0465c25187f78527e6434f0c7b" }
+onetun = { git = "https://github.com/rustonbsd/onetun.git", rev = "9471d754fd6f5cf7333c11e03526faf24d716b35" }
 rust-ini = "0.21.1"
 
 [build-dependencies]
